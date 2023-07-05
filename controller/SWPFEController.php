@@ -11,7 +11,7 @@ class SWPFEController
         add_action('admin_menu', array( $this, 'swpfe_register_custom_admin_page' ));
         add_action('wpforms_process_complete', array($this, 'swpfe_save_wpf_entry'), 10, 4);
         add_action('admin_enqueue_scripts', array( $this, 'swpfe_enqueue_admin_scripts'));
-        add_filter('admin_title', array( $this, 'swpfe_custom_admin_title'), 10, 2);
+        // add_filter('admin_title', array( $this, 'swpfe_custom_admin_title'), 10, 2);
     }
 
     public function swpfe_admin_menu() {
@@ -28,7 +28,7 @@ class SWPFEController
 
     function swpfe_register_custom_admin_page() {
         add_submenu_page(
-            null, // hidden submenu
+            'wpf-entries', // hidden submenu
             __('Form Entries', 'wpf-entries-list'),
             __('Form Entries', 'wpf-entries-list'),
             'manage_options',
@@ -110,11 +110,11 @@ class SWPFEController
         wp_enqueue_style('plugin-style', SWPFE_PLUGIN_URL . '/lib/assets/style.css');
     }
 
-    function swpfe_custom_admin_title($admin_title, $title) {
-        global $pagenow;
-        if ($pagenow === 'admin.php' && $_GET['page'] === 'wpf-entries-list') {
-            return 'Form Entries Listing ‹ ' . get_bloginfo('name');
-        }
-        return $admin_title;
-    }
+    // function swpfe_custom_admin_title($admin_title, $title) {
+    //     global $pagenow;
+    //     if ($pagenow === 'admin.php' && $_GET['page'] === 'wpf-entries-list') {
+    //         return 'Form Entries Listing ‹ ' . get_bloginfo('name');
+    //     }
+    //     return $admin_title;
+    // }
 }
