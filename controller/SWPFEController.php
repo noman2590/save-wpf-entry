@@ -42,25 +42,29 @@ class SWPFEController
 
         $charset_collate = $wpdb->get_charset_collate();
         $table_name = $wpdb->prefix . 'wpf_entries';
-        $sql = "CREATE TABLE  $table_name (
-            `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, 
-            `post_id` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-            `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-            `updated_at` timestamp NULL DEFAULT NULL,
-            PRIMARY KEY  (id)
-        ) $charset_collate;";
-        dbDelta($sql);
+        
+        if ( $wpdb->get_var( $wpdb->prepare( "SHOW TABLES LIKE %s", $table_name ) ) !== $table_name ) {
+            $sql = "CREATE TABLE  $table_name (
+                `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, 
+                `post_id` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+                `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+                `updated_at` timestamp NULL DEFAULT NULL,
+                PRIMARY KEY  (id)
+            ) $charset_collate;";
+            dbDelta($sql);
+        }
 
         $table_name = $wpdb->prefix . 'wpf_entry_meta';
-        $sql = "CREATE TABLE  $table_name (
-            `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, 
-            `wpf_entry_id` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-            `meta_key` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-            `meta_value` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-            PRIMARY KEY  (id)
-        ) $charset_collate;";
-
-        dbDelta($sql);
+        if ( $wpdb->get_var( $wpdb->prepare( "SHOW TABLES LIKE %s", $table_name ) ) !== $table_name ) {
+            $sql = "CREATE TABLE  $table_name (
+                `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, 
+                `wpf_entry_id` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+                `meta_key` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+                `meta_value` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+                PRIMARY KEY  (id)
+            ) $charset_collate;";
+            dbDelta($sql);
+        }
     }
 
     public static function swpfe_set_query_vars( $args )
